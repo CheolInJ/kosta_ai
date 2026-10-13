@@ -1,0 +1,233 @@
+{
+  "main": {
+    "id": "3a9f02746a99b35f",
+    "type": "split",
+    "children": [
+      {
+        "id": "2e5d9903f6133883",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "261cca75a9e67eb7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "file:C:/Users/KOSTA/AppData/Local/npm-cache/_npx/9cb06364208d5c89/node_modules/.bin/design.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "design"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "df6d7894deb99524",
+    "type": "split",
+    "children": [
+      {
+        "id": "a3aca28999b14b51",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b796e05c3e1ce08e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "파일 탐색기"
+            }
+          },
+          {
+            "id": "1a5917bc2a4e4285",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "검색"
+            }
+          },
+          {
+            "id": "92625394a7a74bc7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "북마크"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "687064f18f60ec0e",
+    "type": "split",
+    "children": [
+      {
+        "id": "0f8ee1a440c63236",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0921feb1c52a61f0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "file:C:/Users/KOSTA/AppData/Local/npm-cache/_npx/9cb06364208d5c89/node_modules/.bin/design.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "백링크"
+            }
+          },
+          {
+            "id": "6511ac718f96b46f",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "file:C:/Users/KOSTA/AppData/Local/npm-cache/_npx/9cb06364208d5c89/node_modules/.bin/design.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "나가는 링크"
+            }
+          },
+          {
+            "id": "8ebfee16c251e5c1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "태그"
+            }
+          },
+          {
+            "id": "2fb2ff99f6a544c3",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "모든 속성"
+            }
+          },
+          {
+            "id": "f8871a064f34b252",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "file:C:/Users/KOSTA/AppData/Local/npm-cache/_npx/9cb06364208d5c89/node_modules/.bin/design.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "개요"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:빠른 전환기 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 일일 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false,
+      "bases:새 베이스 생성하기": false
+    }
+  },
+  "active": "261cca75a9e67eb7",
+  "lastOpenFiles": [
+    "shots/final_02.png",
+    "shots/미확인 308007.crdownload",
+    "shots/final_01.png",
+    "shots/미확인 510318.crdownload",
+    "dist/assets/index-DHObkVAQ.css",
+    "dist/assets/index-CKQuDm0c.js",
+    "src/App.css.tmp.8188.a57735fec983",
+    "dist/assets/index-DXkr-iJU.css",
+    "dist/assets/index-nEHWm3BA.js",
+    "dist/assets/index-CHCdsV53.css",
+    "dist/assets/index-CvgnZn--.js",
+    "src/App.css.tmp.8188.9f7a4c183214",
+    "shots/3_입히기_글꼴_02.png",
+    "shots/3_입히기_글꼴_01.png",
+    "shots/2_뼈대잡기_02.png",
+    "shots/2_뼈대잡기_01.png",
+    "shots/1_덜어내기_02.png",
+    "shots/1_덜어내기_01.png",
+    "shots/2_덜어내기_02.png",
+    "shots/2_덜어내기_01.png",
+    "shots/2.png",
+    "DESIGN_PLAN.md",
+    "DESIGN.md",
+    "DESIGN_REVIEW.md",
+    "DESIGN_FEEDBACK.md",
+    "CLAUDE.md",
+    "node_modules/react-dom/README.md",
+    "node_modules/vite/README.md",
+    "node_modules/vite/LICENSE.md",
+    "node_modules/postcss/README.md",
+    "node_modules/react/README.md",
+    "node_modules/scheduler/README.md",
+    "node_modules/@vitejs/plugin-react/README.md",
+    "node_modules/picocolors/README.md",
+    "node_modules/@rolldown/pluginutils/README.md",
+    "node_modules/@oxc-project/types/README.md",
+    "node_modules/lightningcss-win32-x64-msvc/README.md",
+    "node_modules/@rolldown/binding-win32-x64-msvc/README.md",
+    "node_modules/rolldown/README.md"
+  ]
+}

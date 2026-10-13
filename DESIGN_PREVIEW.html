@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>책길 디자인 계획 미리보기</title>
+<!-- DESIGN_PLAN.md를 눈으로 볼 수 있게 만든 예시 페이지. 앱 코드와는 관계없다. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
+<style>
+@font-face { font-family: "MaruBuri"; font-weight: 400; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@kfonts/maruburi@0.1.0/MaruBuri-Regular.woff2") format("woff2"); }
+@font-face { font-family: "MaruBuri"; font-weight: 600; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@kfonts/maruburi@0.1.0/MaruBuri-SemiBold.woff2") format("woff2"); }
+
+:root {
+  /* 팔레트 7색 */
+  --paper: #F5F1E8;   /* 미색 종이: 페이지 배경 */
+  --sheet: #FBF9F4;   /* 낱장: 표면 */
+  --wax: #EDE6D3;     /* 왁스페이퍼: 보조 표면 */
+  --rule: #DDD6CA;    /* 괘선: 장식선 */
+  --ink: #2B2723;     /* 먹: 본문, 선택 상태 */
+  --pencil: #6B635A;  /* 연필: 보조 글자, 입력 테두리 */
+  --accent: #2F4A6B;  /* 잉크 블루: 강조색 하나 */
+
+  --sans: "Pretendard", -apple-system, system-ui, sans-serif;
+  --serif: "MaruBuri", "Noto Serif KR", serif;
+
+  --s: 0.85rem; --m: 1rem; --l: 1.25rem; --xl: 2rem;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  font-size: var(--m);
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--paper);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───────── 문서 틀 (설명용) ───────── */
+.doc { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+.doc-head { margin-bottom: 32px; }
+.doc-head .kicker { color: var(--pencil); font-size: var(--s); }
+.doc-head h1 { font-family: var(--serif); font-weight: 600; font-size: var(--xl); letter-spacing: -0.01em; line-height: 1.2; margin: 8px 0; }
+.principle {
+  font-family: var(--serif); font-size: var(--l); line-height: 1.6;
+  border-left: 2px solid var(--ink); padding: 8px 16px; margin-top: 16px;
+}
+.doc section.block { margin-top: 64px; }
+.doc h2 { font-family: var(--serif); font-weight: 600; font-size: var(--l); margin-bottom: 8px; }
+.doc .lead { color: var(--pencil); margin-bottom: 16px; }
+.note { color: var(--pencil); font-size: var(--s); margin-top: 8px; }
+.grid { display: grid; gap: 16px; }
+.grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.panel { background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; padding: 16px; }
+.panel h3 { font-size: var(--s); font-weight: 600; color: var(--pencil); margin-bottom: 8px; }
+code { font-size: var(--s); background: var(--wax); padding: 0 8px; border-radius: 8px; }
+
+/* 색 견본 */
+.swatch { border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--sheet); }
+.swatch .chip { height: 88px; display: flex; align-items: flex-end; padding: 8px 16px; font-size: var(--s); }
+.swatch .meta { padding: 16px; }
+.swatch .name { font-family: var(--serif); font-weight: 600; }
+.swatch .hex { color: var(--pencil); font-size: var(--s); }
+.swatch .use { font-size: var(--s); margin-top: 8px; }
+.swatch.is-accent { border: 2px solid var(--accent); }
+
+table { width: 100%; border-collapse: collapse; font-size: var(--s); }
+th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { color: var(--pencil); font-weight: 600; }
+td.num { text-align: right; }
+.pair { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 32px; border-radius: 8px; font-weight: 600; border: 1px solid var(--rule); }
+
+/* 글꼴 견본 */
+.specimen { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.specimen .big { font-size: var(--xl); line-height: 1.2; }
+.type-row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.type-row .label { font-size: var(--s); color: var(--pencil); }
+
+/* 간격 견본 */
+.space-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; font-size: var(--s); }
+.space-bar { height: 16px; background: var(--ink); }
+
+/* ───────── 화면 예시 (계획대로 그린 목업) ───────── */
+.phones { display: flex; flex-wrap: wrap; gap: 32px; justify-content: center; }
+.phone-wrap { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.phone-wrap .cap { font-size: var(--s); color: var(--pencil); }
+.phone {
+  width: 390px; border: 1px solid var(--rule); border-radius: 32px; overflow: hidden;
+  background: var(--paper);
+}
+.screen { padding: 32px 16px; }
+
+.app-name { font-family: var(--serif); font-weight: 600; font-size: var(--m); letter-spacing: 0; }
+.greet { font-size: var(--l); color: var(--pencil); letter-spacing: -0.02em; margin-bottom: 16px; }
+
+/* 밑줄형 탭 */
+.tabs { display: flex; border-bottom: 1px solid var(--rule); margin-bottom: 32px; }
+.tabs button {
+  flex: 1; font: inherit; background: none; border: none; padding: 8px; cursor: pointer;
+  color: var(--pencil); border-bottom: 2px solid transparent; margin-bottom: -1px;
+}
+.tabs button.on { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
+
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; padding: 16px; margin-bottom: 32px; }
+.card-label { font-size: var(--s); font-weight: 600; color: var(--pencil); margin-bottom: 8px; }
+
+/* 요약: 가장 중요한 현황 */
+.sum-title { font-family: var(--serif); margin-bottom: 8px; }
+.sum-stats { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
+.sum-stats > div + div { border-left: 1px solid var(--rule); }
+.sum-label { font-size: var(--s); color: var(--pencil); }
+.sum-count { font-family: var(--serif); font-weight: 600; font-size: var(--xl); line-height: 1.2; letter-spacing: -0.01em; color: var(--accent); }
+.sum-reading { border-top: 1px solid var(--rule); margin-top: 16px; padding-top: 16px; text-align: center; }
+
+/* 연속 독서일 + 목표: 한 카드, 왼쪽 정렬, 연필색으로 옅게 */
+.quiet { color: var(--pencil); }
+.streak-num { font-family: var(--serif); font-weight: 600; font-size: var(--xl); line-height: 1.2; letter-spacing: -0.01em; }
+.divider { border-top: 1px solid var(--rule); margin: 16px 0; }
+.goal-line { font-family: var(--serif); font-size: var(--l); margin-bottom: 8px; }
+.progress { height: 8px; background: var(--wax); border-radius: 999px; overflow: hidden; }
+.progress > span { display: block; height: 100%; background: var(--ink); border-radius: 999px; }
+.goal-remain { display: flex; justify-content: flex-end; font-size: var(--s); margin-top: 8px; }
+
+/* 입력 · 버튼 */
+.field { width: 100%; font: inherit; padding: 8px 16px; background: var(--sheet); color: var(--ink); border: 1px solid var(--pencil); border-radius: 8px; margin-bottom: 8px; }
+.field::placeholder { color: var(--pencil); }
+.field.err { border: 2px solid var(--ink); }
+.err-msg { font-size: var(--s); font-weight: 600; margin: -8px 0 8px; }
+.btn-primary { width: 100%; font: inherit; font-weight: 600; padding: 8px; min-height: 40px; border: none; border-radius: 8px; background: var(--accent); color: var(--sheet); cursor: pointer; }
+.btn-text { font: inherit; font-size: var(--s); background: none; border: none; color: var(--pencil); padding: 8px; cursor: pointer; }
+.btn-text:hover { color: var(--ink); text-decoration: underline; }
+
+/* 목록: 테두리 하나 + 괘선 구분 (inset grouped) */
+.list-title { font-family: var(--serif); font-weight: 600; margin: 32px 0 8px; display: flex; gap: 8px; }
+.list-title .count { font-family: var(--sans); font-weight: 400; color: var(--pencil); }
+.list { list-style: none; background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; }
+.list li { padding: 16px; }
+.list li + li { border-top: 1px solid var(--rule); }
+.item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.item-title { font-family: var(--serif); font-weight: 600; line-height: 1.4; }
+.item-actions { display: flex; margin: -8px -8px 0 0; }
+.item-author { font-size: var(--s); color: var(--pencil); }
+.item-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 8px; }
+.item-pos { font-weight: 600; }
+.item-date { font-size: var(--s); color: var(--pencil); }
+.item-review { font-family: var(--serif); color: var(--pencil); line-height: 1.8; margin-top: 8px; padding-left: 16px; border-left: 1px solid var(--rule); }
+
+/* 세그먼트 토글 */
+.seg { display: flex; background: var(--wax); border-radius: 999px; padding: 4px; margin-bottom: 16px; }
+.seg button { flex: 1; font: inherit; background: none; border: none; border-radius: 999px; padding: 8px; color: var(--pencil); cursor: pointer; }
+.seg button.on { background: var(--sheet); color: var(--ink); font-weight: 600; }
+.year-nav { display: flex; justify-content: center; align-items: center; gap: 16px; font-weight: 600; margin-bottom: 16px; }
+.year-nav button { font: inherit; background: none; border: 1px solid var(--pencil); border-radius: 8px; padding: 8px 16px; color: var(--ink); cursor: pointer; }
+.year-nav button:disabled { opacity: 0.3; }
+.headline { font-family: var(--serif); font-weight: 600; font-size: var(--l); margin-bottom: 8px; }
+.headline .n { color: var(--accent); }
+
+/* 그래프: 바닥선만, 각진 막대, 일반=연필, 선택=잉크 블루 */
+.chart { height: 200px; display: flex; align-items: flex-end; gap: 8px; border-bottom: 1px solid var(--rule); padding-top: 32px; }
+.col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; position: relative; cursor: pointer; }
+.bar { width: 100%; background: var(--pencil); }
+.col.on .bar { background: var(--accent); }
+.col .val { position: absolute; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: var(--s); font-weight: 600; color: var(--accent); }
+.axis { display: flex; gap: 8px; padding-top: 8px; }
+.axis span { flex: 1; text-align: center; font-size: var(--s); color: var(--pencil); }
+.axis span.on { color: var(--ink); font-weight: 600; }
+.chart-hint { font-size: var(--s); color: var(--pencil); text-align: center; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="doc-head">
+    <p class="kicker">DESIGN_PLAN.md 미리보기 · 2026-10-13 · 예시 화면이며 실제 앱 코드는 아직 바뀌지 않았어요</p>
+    <h1>책길 디자인 계획</h1>
+    <p class="lead">분위기: 차분함 · 조용함 · 종이책</p>
+    <p class="principle">종이 위에 먹으로 쓰듯 조용하게, 파랑은 누를 곳 하나와 가장 중요한 숫자에만.</p>
+  </header>
+
+  <!-- 1. 화면 예시 -->
+  <section class="block">
+    <h2>1. 계획대로 그린 화면</h2>
+    <p class="lead">홈과 독서 현황을 계획의 색 · 글꼴 · 카드 규칙으로 그렸어요. 탭, 토글, 막대는 눌러 볼 수 있어요.</p>
+
+    <div class="phones">
+      <!-- 홈 -->
+      <div class="phone-wrap">
+        <div class="phone"><div class="screen">
+          <p class="app-name">책길 · Book Path</p>
+          <p class="greet">독자님, 오늘도 반가워요</p>
+          <nav class="tabs" data-tabs><button class="on">홈</button><button>독서 현황</button></nav>
+
+          <section class="card">
+            <p class="sum-title">독자님, 지금까지 이만큼 다 읽었어요</p>
+            <div class="sum-stats">
+              <div><p class="sum-label">10월</p><p class="sum-count">1권</p></div>
+              <div><p class="sum-label">2026년</p><p class="sum-count">4권</p></div>
+              <div><p class="sum-label">전체</p><p class="sum-count">7권</p></div>
+            </div>
+            <p class="sum-reading">지금 <b>2권</b>을 읽고 있어요</p>
+          </section>
+
+          <section class="card quiet">
+            <p class="streak-num">5일째</p>
+            <p>독자님, 연속으로 읽고 있어요</p>
+            <div class="divider"></div>
+            <p class="card-label">이번 달 목표를 확인해요</p>
+            <p class="goal-line">2권 중 1권 읽었어요</p>
+            <div class="progress"><span style="width:50%"></span></div>
+            <p class="goal-remain">목표까지 1권 남았어요</p>
+          </section>
+
+          <section class="card">
+            <p class="card-label">새 책을 추가해요</p>
+            <input class="field" placeholder="책 제목을 적어 주세요">
+            <input class="field" placeholder="저자를 적어 주세요 (안 적어도 돼요)">
+            <input class="field" placeholder="어디까지 읽었는지 적어요 (예: 1장)">
+            <button class="btn-primary">추가해요</button>
+          </section>
+
+          <h3 class="list-title">지금 읽고 있어요 <span class="count">2</span></h3>
+          <ul class="list">
+            <li>
+              <div class="item-head"><p class="item-title">지구 끝의 온실</p>
+                <div class="item-actions"><button class="btn-text">고쳐요</button><button class="btn-text">지워요</button></div></div>
+              <p class="item-author">김초엽</p>
+              <div class="item-row"><span class="item-pos">5장까지 읽었어요</span><span class="item-date">오늘 읽었어요</span></div>
+            </li>
+            <li>
+              <div class="item-head"><p class="item-title">물고기는 존재하지 않는다</p>
+                <div class="item-actions"><button class="btn-text">고쳐요</button><button class="btn-text">지워요</button></div></div>
+              <p class="item-author">룰루 밀러</p>
+              <div class="item-row"><span class="item-pos">2장까지 읽었어요</span><span class="item-date">3일 전에 읽었어요</span></div>
+            </li>
+          </ul>
+
+          <h3 class="list-title">다 읽었어요 <span class="count">7</span></h3>
+          <ul class="list">
+            <li>
+              <div class="item-head"><p class="item-title">불편한 편의점</p>
+                <div class="item-actions"><button class="btn-text">고쳐요</button><button class="btn-text">지워요</button></div></div>
+              <p class="item-author">김호연</p>
+              <div class="item-row"><span></span><span class="item-date">2026년 10월 11일에 다 읽었어요</span></div>
+              <p class="item-review">따뜻한 이야기라 금방 읽혔어요. 지친 날 다시 펼쳐 보고 싶어요.</p>
+            </li>
+            <li>
+              <div class="item-head"><p class="item-title">아몬드</p>
+                <div class="item-actions"><button class="btn-text">고쳐요</button><button class="btn-text">지워요</button></div></div>
+              <p class="item-author">손원평</p>
+              <div class="item-row"><span></span><span class="item-date">2026년 9월 1일에 다 읽었어요</span></div>
+              <p class="item-review">감정을 배워 가는 과정이 마음에 오래 남았어요.</p>
+            </li>
+          </ul>
+        </div></div>
+        <p class="cap">홈 · 요약이 맨 위, 숫자만 잉크 블루</p>
+      </div>
+
+      <!-- 독서 현황 -->
+      <div class="phone-wrap">
+        <div class="phone"><div class="screen">
+          <p class="app-name">책길 · Book Path</p>
+          <p class="greet">독자님, 오늘도 반가워요</p>
+          <nav class="tabs" data-tabs><button>홈</button><button class="on">독서 현황</button></nav>
+
+          <section class="card">
+            <div class="seg" data-tabs><button class="on">월별</button><button>연별</button></div>
+            <div class="year-nav"><button aria-label="이전 해로 가요">◀</button><span>2026년</span><button disabled aria-label="다음 해로 가요">▶</button></div>
+            <p class="headline">독자님, 2026년에 <span class="n">4권</span> 읽었어요</p>
+            <div class="chart" id="chart"></div>
+            <div class="axis" id="axis"></div>
+            <p class="chart-hint">막대를 누르면 그 달에 읽은 책이 보여요</p>
+          </section>
+
+          <h3 class="list-title" id="sel-title">2026년 7월에 다 읽은 책이에요 <span class="count">1</span></h3>
+          <ul class="list" id="sel-list"></ul>
+        </div></div>
+        <p class="cap">독서 현황 · 일반 막대는 연필, 선택한 막대만 잉크 블루</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 색 -->
+  <section class="block">
+    <h2>2. 색 (7색: 뉴트럴 6 + 강조 1)</h2>
+    <p class="lead">2026 팬톤 올해의 색 Cloud Dancer와 WGSN Wax Paper 흐름을 참고한 제안값이에요(공식 색 값 아님).</p>
+    <div class="grid cols-3" id="swatches"></div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="panel">
+        <h3>강조색(잉크 블루)을 쓰는 곳은 세 군데뿐</h3>
+        <table>
+          <tr><td>누를 곳 하나</td><td><button class="btn-primary" style="width:auto;padding:8px 16px">추가해요</button></td></tr>
+          <tr><td>홈 요약 숫자</td><td><span class="sum-count">4권</span></td></tr>
+          <tr><td>현황 대표 숫자 · 선택 막대</td><td><span class="headline"><span class="n">4권</span></span></td></tr>
+        </table>
+        <p class="note">활성 탭, 토글·라디오 선택, 진행 막대, 오류는 모두 먹으로 처리해요. 빨강은 쓰지 않아요.</p>
+      </div>
+      <div class="panel">
+        <h3>대비 (WCAG 계산값)</h3>
+        <table>
+          <tr><th>견본</th><th>조합</th><th class="num">대비</th></tr>
+          <tr><td><span class="pair" style="background:var(--paper);color:var(--ink)">가</span></td><td>먹 / 미색 종이</td><td class="num">13.15</td></tr>
+          <tr><td><span class="pair" style="background:var(--paper);color:var(--pencil)">가</span></td><td>연필 / 미색 종이</td><td class="num">5.24</td></tr>
+          <tr><td><span class="pair" style="background:var(--sheet);color:var(--pencil)">가</span></td><td>연필 / 낱장</td><td class="num">5.61</td></tr>
+          <tr><td><span class="pair" style="background:var(--paper);color:var(--accent)">가</span></td><td>잉크 블루 / 미색 종이</td><td class="num">8.06</td></tr>
+          <tr><td><span class="pair" style="background:var(--accent);color:var(--sheet)">가</span></td><td>낱장 / 잉크 블루 (버튼)</td><td class="num">8.63</td></tr>
+          <tr><td><span class="pair" style="background:var(--paper);border-color:var(--rule)"></span></td><td>괘선 / 미색 종이 (장식선 전용)</td><td class="num">1.28</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 글꼴 -->
+  <section class="block">
+    <h2>3. 글꼴: Pretendard + 마루 부리</h2>
+    <p class="lead">기록과 감정은 마루 부리, 조작과 정보는 Pretendard. 굵기는 400과 600만 써요.</p>
+    <div class="specimen">
+      <div class="panel">
+        <h3>마루 부리 (MaruBuri) · 숫자, 책 제목, 감상, 목록 제목</h3>
+        <p class="big" style="font-family:var(--serif);font-weight:600">7권 · 5일째</p>
+        <p style="font-family:var(--serif);font-weight:400;line-height:1.8;margin-top:8px">따뜻한 이야기라 금방 읽혔어요. 지친 날 다시 펼쳐 보고 싶어요.</p>
+        <p class="note">400 Regular · 600 SemiBold</p>
+      </div>
+      <div class="panel">
+        <h3>Pretendard · 버튼, 라벨, 날짜, 입력칸</h3>
+        <p class="big" style="font-weight:600;letter-spacing:-0.02em">추가해요 · 10월</p>
+        <p style="margin-top:8px">2026년 10월 11일에 다 읽었어요 · 3일 전에 읽었어요</p>
+        <p class="note">400 Regular · 600 SemiBold</p>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <h3>크기 4단계 × 쓰임</h3>
+      <div class="type-row"><span class="label">XL 2rem · 마루 부리 600</span><span style="font-family:var(--serif);font-weight:600;font-size:var(--xl);line-height:1.2;color:var(--accent)">4권</span></div>
+      <div class="type-row"><span class="label">L 1.25rem · 마루 부리 600</span><span style="font-family:var(--serif);font-weight:600;font-size:var(--l)">독자님, 2026년에 4권 읽었어요</span></div>
+      <div class="type-row"><span class="label">L 1.25rem · Pretendard 400</span><span style="font-size:var(--l);letter-spacing:-0.02em;color:var(--pencil)">독자님, 오늘도 반가워요</span></div>
+      <div class="type-row"><span class="label">M 1rem · 마루 부리 600</span><span style="font-family:var(--serif);font-weight:600">지구 끝의 온실</span></div>
+      <div class="type-row"><span class="label">M 1rem · Pretendard 600</span><span style="font-weight:600">5장까지 읽었어요</span></div>
+      <div class="type-row"><span class="label">M 1rem · 마루 부리 400</span><span style="font-family:var(--serif);color:var(--pencil);line-height:1.8">감정을 배워 가는 과정이 마음에 오래 남았어요.</span></div>
+      <div class="type-row"><span class="label">S 0.85rem · Pretendard 400</span><span style="font-size:var(--s);color:var(--pencil)">김초엽 · 오늘 읽었어요</span></div>
+    </div>
+  </section>
+
+  <!-- 4. 카드 · 선 · 모서리 · 간격 -->
+  <section class="block">
+    <h2>4. 카드 · 선 · 모서리 · 간격</h2>
+    <p class="lead">그림자는 쓰지 않아요. 섹션은 묶고, 항목은 선으로 나눠요(iOS inset grouped 방식 참고).</p>
+    <div class="grid cols-3">
+      <div class="panel">
+        <h3>모서리는 두 가지</h3>
+        <div style="display:flex;gap:16px;align-items:center">
+          <div style="width:72px;height:48px;border:1px solid var(--pencil);border-radius:8px"></div><span>8px · 카드, 입력, 버튼</span>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;margin-top:16px">
+          <div style="width:72px;height:24px;background:var(--wax);border-radius:999px"></div><span>999px · 토글, 진행 막대</span>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;margin-top:16px">
+          <div style="width:16px;height:40px;background:var(--pencil)"></div><span>0 · 그래프 막대</span>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>선은 1px · 예외는 먹 2px 두 곳</h3>
+        <p style="border-bottom:1px solid var(--rule);padding-bottom:8px">괘선 1px · 카드 테두리, 구분선</p>
+        <p style="border:1px solid var(--pencil);border-radius:8px;padding:8px 16px;margin-top:8px">연필 1px · 입력칸 테두리</p>
+        <p style="border-bottom:2px solid var(--ink);padding-bottom:8px;margin-top:8px;font-weight:600">먹 2px · 활성 탭 밑줄</p>
+        <input class="field err" style="margin-top:8px" value="">
+        <p class="err-msg">! 독자님, 책 제목을 적어 주세요</p>
+      </div>
+      <div class="panel">
+        <h3>간격은 세 단계</h3>
+        <div class="space-row"><div class="space-bar" style="width:8px"></div>8px · 한 묶음 안</div>
+        <div class="space-row"><div class="space-bar" style="width:16px"></div>16px · 카드 안쪽, 목록 항목 위아래</div>
+        <div class="space-row"><div class="space-bar" style="width:32px"></div>32px · 묶음 사이, 제목 위</div>
+        <p class="note">제목은 위 32px, 아래 8px</p>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="panel">
+        <h3>전: 책마다 카드</h3>
+        <div style="border:1px solid var(--rule);border-radius:8px;padding:16px;margin-bottom:8px">지구 끝의 온실</div>
+        <div style="border:1px solid var(--rule);border-radius:8px;padding:16px">물고기는 존재하지 않는다</div>
+      </div>
+      <div class="panel">
+        <h3>후: 묶음 하나 + 괘선</h3>
+        <ul class="list"><li>지구 끝의 온실</li><li>물고기는 존재하지 않는다</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 배치와 정렬 -->
+  <section class="block">
+    <h2>5. 배치와 정렬</h2>
+    <div class="grid cols-3">
+      <div class="panel"><h3>한 단 배치</h3><p>최대 너비 480px, 가운데 배치, 좌우 여백 16px.</p></div>
+      <div class="panel"><h3>정렬</h3><p>기본은 왼쪽 정렬. 가운데 정렬은 요약 숫자 3칸에만. 날짜와 남은 권수는 오른쪽 정렬.</p></div>
+      <div class="panel"><h3>순서 (홈)</h3><p>요약 → 연속 독서일·목표 → 책 추가 → 지금 읽고 있어요 → 다 읽었어요.</p></div>
+    </div>
+  </section>
+</div>
+
+<script>
+// 색 견본
+const colors = [
+  ["미색 종이", "#F5F1E8", "페이지 배경", "화면 전체 바탕"],
+  ["낱장", "#FBF9F4", "표면", "카드, 입력칸 바탕, 토글 선택 칸, 버튼 글자"],
+  ["왁스페이퍼", "#EDE6D3", "보조 표면", "진행 막대 트랙, 토글 트랙"],
+  ["괘선", "#DDD6CA", "장식선", "카드 테두리, 구분선, 그래프 바닥선"],
+  ["먹", "#2B2723", "본문 · 선택 상태", "제목, 본문, 활성 탭, 진행 막대 채움, 오류"],
+  ["연필", "#6B635A", "보조 글자 · 입력 테두리", "라벨, 날짜, 덜 중요한 정보, 일반 막대"],
+  ["잉크 블루", "#2F4A6B", "강조색 (하나뿐)", "주요 버튼, 요약 숫자, 선택한 막대"],
+];
+const light = ["#F5F1E8", "#FBF9F4", "#EDE6D3", "#DDD6CA"];
+document.getElementById("swatches").innerHTML = colors.map(([name, hex, role, use]) => `
+  <div class="swatch${name === "잉크 블루" ? " is-accent" : ""}">
+    <div class="chip" style="background:${hex};color:${light.includes(hex) ? "#2B2723" : "#FBF9F4"}">${role}</div>
+    <div class="meta"><p class="name">${name}</p><p class="hex">${hex}</p><p class="use">${use}</p></div>
+  </div>`).join("");
+
+// 탭 · 토글 (보기만 바뀌는 예시)
+document.querySelectorAll("[data-tabs]").forEach((group) => {
+  group.querySelectorAll("button").forEach((b) => b.addEventListener("click", () => {
+    group.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+  }));
+});
+
+// 그래프 예시: 2026년 월별 다 읽은 권수
+const months = [0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0];
+const books = {
+  3: [["데미안", "헤르만 헤세", "2026년 4월 1일에 다 읽었어요", "어렵지만 문장을 곱씹어 읽는 재미가 있었어요."]],
+  6: [["달러구트 꿈 백화점", "이미예", "2026년 7월 1일에 다 읽었어요", "상상력이 즐거워서 자기 전에 조금씩 읽었어요."]],
+  8: [["아몬드", "손원평", "2026년 9월 1일에 다 읽었어요", "감정을 배워 가는 과정이 마음에 오래 남았어요."]],
+  9: [["불편한 편의점", "김호연", "2026년 10월 11일에 다 읽었어요", "따뜻한 이야기라 금방 읽혔어요. 지친 날 다시 펼쳐 보고 싶어요."]],
+};
+let selected = 6;
+function drawChart() {
+  const max = Math.max(1, ...months);
+  document.getElementById("chart").innerHTML = months.map((n, i) => `
+    <div class="col${i === selected ? " on" : ""}" data-m="${i}" title="${i + 1}월 · ${n}권">
+      ${i === selected ? `<span class="val" style="bottom:calc(${(n / max) * 100}% + 4px)">${n}권</span>` : ""}
+      <div class="bar" style="height:${(n / max) * 100}%"></div>
+    </div>`).join("");
+  document.getElementById("axis").innerHTML = months.map((_, i) =>
+    `<span class="${i === selected ? "on" : ""}">${i + 1}</span>`).join("");
+  const list = books[selected] || [];
+  document.getElementById("sel-title").innerHTML =
+    `2026년 ${selected + 1}월에 다 읽은 책이에요 <span class="count">${list.length}</span>`;
+  document.getElementById("sel-list").innerHTML = list.length
+    ? list.map(([t, a, d, r]) => `<li><p class="item-title">${t}</p><p class="item-author">${a}</p>
+        <div class="item-row"><span></span><span class="item-date">${d}</span></div>
+        <p class="item-review">${r}</p></li>`).join("")
+    : `<li class="item-date">이때는 다 읽은 책이 없어요</li>`;
+  document.querySelectorAll("#chart .col").forEach((c) =>
+    c.addEventListener("click", () => { selected = Number(c.dataset.m); drawChart(); }));
+}
+drawChart();
+</script>
+</body>
+</html>

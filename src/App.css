@@ -1,0 +1,634 @@
+/*
+  색은 DESIGN.md Colors의 토큰 7개만 쓴다. 색 값은 아래 :root에만 있고, 나머지는 모두 var(--color-*)로 쓴다.
+    paper(바탕) / sheet(카드·입력칸) / wax(진행 막대 트랙) / rule(장식선)
+    ink(본문·선택 상태) / pencil(보조 글자·입력 테두리) / primary(잉크 블루: 주요 버튼과 가장 중요한 숫자에만)
+  글자 크기는 0.85rem / 1rem / 1.25rem / 2rem 네 단계, 모서리는 8px 하나만 쓴다.
+  간격은 8px / 16px / 32px 세 단계만 쓴다.
+    8px  = 한 묶음 안 (줄과 줄, 칸과 칸, 같은 목록의 카드끼리)
+    16px = 카드 안쪽 여백, 카드 안의 작은 묶음 사이
+    32px = 묶음 사이 (카드와 카드, 목록과 목록)
+  제목은 위쪽 간격을 아래쪽(8px)보다 넓게 둔다.
+  글꼴은 DESIGN.md Typography를 따른다.
+    기록과 감정(숫자, 책 제목, 감상, 목록 제목) = 마루 부리 / 조작과 정보(버튼, 라벨, 날짜, 입력칸) = Pretendard
+    굵기는 400과 600만 쓴다. 숫자는 tabular-nums로 자릿수를 맞춘다.
+*/
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css");
+
+@font-face {
+  font-family: "MaruBuri";
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@kfonts/maruburi@0.1.0/MaruBuri-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "MaruBuri";
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@kfonts/maruburi@0.1.0/MaruBuri-SemiBold.woff2") format("woff2");
+}
+
+:root {
+  --color-paper: #F5F1E8;
+  --color-sheet: #FBF9F4;
+  --color-wax: #EDE6D3;
+  --color-rule: #DDD6CA;
+  --color-ink: #2B2723;
+  --color-pencil: #6B635A;
+  --color-primary: #2F4A6B;
+
+  --font-sans: "Pretendard", -apple-system, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  --font-serif: "MaruBuri", "Noto Serif KR", serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  line-height: 1.5;
+}
+
+/* 브라우저 기본색(파란 라디오 점, 회색 placeholder)도 토큰으로 맞춘다. */
+input[type="radio"] {
+  accent-color: var(--color-ink);
+}
+
+::placeholder {
+  color: var(--color-pencil);
+  opacity: 1;
+}
+
+/* 제목 태그와 강조 태그의 기본 굵기(700)를 600으로 맞춘다. */
+h1,
+h2,
+h3,
+strong,
+b {
+  font-weight: 600;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-size: 1rem;
+  color: var(--color-ink);
+}
+
+/* 덜 중요한 정보는 크기를 줄이지 않고 회색으로 옅게 한다. */
+.greeting {
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--color-pencil);
+}
+
+.menu,
+.view-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.menu {
+  margin-bottom: 32px;
+}
+
+.view-toggle {
+  margin-bottom: 8px;
+}
+
+.menu button,
+.view-toggle button {
+  flex: 1;
+  font: inherit;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-pencil);
+  cursor: pointer;
+}
+
+.menu button.active,
+.view-toggle button.active {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* 메뉴 탭: 탭 줄 아래는 괘선, 활성 탭은 먹 밑줄 */
+.menu {
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.menu button {
+  border-bottom: 2px solid transparent;
+}
+
+.menu button.active {
+  border-bottom-color: var(--color-ink);
+}
+
+/* 월별/연별 토글: 트랙은 왁스페이퍼, 선택된 칸은 낱장 */
+.view-toggle {
+  background: var(--color-wax);
+  border-radius: 999px;
+  padding: 8px;
+}
+
+.view-toggle button {
+  border-radius: 999px;
+}
+
+.view-toggle button.active {
+  background: var(--color-sheet);
+}
+
+.year-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.year-nav button {
+  font: inherit;
+  padding: 8px 16px;
+  border: 1px solid var(--color-pencil);
+  border-radius: 8px;
+  background: var(--color-sheet);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+.year-nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* 독서 현황의 대표 숫자는 강조색 */
+.stats-count {
+  color: var(--color-primary);
+}
+
+.stats-headline {
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* 막대그래프: 막대는 강조색, 선택한 막대는 거의 검정
+   위쪽 32px은 선택한 막대 위 숫자가 들어갈 자리다. */
+.chart-plot {
+  position: relative;
+  height: 212px;
+  margin-left: 32px;
+}
+
+.chart-grid,
+.chart-bars {
+  position: absolute;
+  inset: 32px 0 0 0;
+}
+
+.chart-gridline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+.chart-gridline span {
+  position: absolute;
+  left: -32px;
+  top: -0.6em;
+  width: 24px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+}
+
+.chart-bars {
+  display: flex;
+}
+
+/* 막대 사이 1px 틈은 막대 모양의 일부라 간격 단계에서 뺀다. */
+.chart-col {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  padding: 0 1px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.chart-col:hover,
+.chart-col:focus-visible {
+  outline: 1px solid var(--color-rule);
+}
+
+.chart-bar-area {
+  position: relative;
+  width: 100%;
+  max-width: 28px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.chart-bar {
+  width: 100%;
+  background: var(--color-pencil);
+}
+
+.chart-col.selected .chart-bar {
+  background: var(--color-primary);
+}
+
+.chart-value {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -4px);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.chart-value.tooltip {
+  z-index: 1;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: var(--color-ink);
+  color: var(--color-sheet);
+}
+
+.chart-labels {
+  display: flex;
+  margin-left: 32px;
+  border-top: 1px solid var(--color-rule);
+  padding-top: 8px;
+}
+
+.chart-labels span {
+  flex: 1;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+}
+
+.chart-labels span.selected {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.chart-unit {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+  text-align: center;
+}
+
+.summary {
+  background: var(--color-sheet);
+  border: 1px solid var(--color-rule);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 32px;
+}
+
+.summary-title {
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+}
+
+.summary-stats > div + div {
+  border-left: 1px solid var(--color-rule);
+}
+
+.summary-label {
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+}
+
+/* 현재 현황이 화면에서 가장 먼저 보이도록 가장 큰 단계를 쓴다. */
+.summary-count {
+  font-family: var(--font-serif);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.summary-reading {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-rule);
+  text-align: center;
+  font-size: 1rem;
+}
+
+.card {
+  background: var(--color-sheet);
+  border: 1px solid var(--color-rule);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 32px;
+}
+
+.card h2 {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+  margin-bottom: 8px;
+}
+
+.streak {
+  text-align: center;
+  color: var(--color-pencil);
+}
+
+.streak-number {
+  font-family: var(--font-serif);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.streak-text {
+  font-size: 1rem;
+}
+
+.goal-text {
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-pencil);
+  margin-bottom: 8px;
+}
+
+.progress {
+  height: 12px;
+  background: var(--color-wax);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--color-ink);
+}
+
+.goal-remain {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+}
+
+.add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-form input {
+  font: inherit;
+  padding: 8px 16px;
+  background: var(--color-sheet);
+  color: var(--color-ink);
+  border: 1px solid var(--color-pencil);
+  border-radius: 8px;
+}
+
+.add-form button {
+  font: inherit;
+  font-weight: 600;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: var(--color-sheet);
+  cursor: pointer;
+}
+
+.add-error {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--color-ink);
+}
+
+.add-error:empty {
+  display: none;
+}
+
+.empty-guide {
+  text-align: center;
+  padding: 32px 16px;
+  background: var(--color-sheet);
+  border: 1px solid var(--color-rule);
+  border-radius: 8px;
+  color: var(--color-pencil);
+  font-family: var(--font-serif);
+  letter-spacing: 0;
+  font-size: 1rem;
+}
+
+.empty-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 8px;
+}
+
+.list-empty {
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+}
+
+/* 목록 제목: 위는 묶음 사이 간격(32px), 아래는 목록과 붙게(8px) */
+.section-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-size: 1rem;
+  margin: 32px 0 8px;
+}
+
+.book-list {
+  list-style: none;
+}
+
+.book {
+  background: var(--color-sheet);
+  border: 1px solid var(--color-rule);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 8px;
+}
+
+.book-actions {
+  float: right;
+  display: flex;
+  gap: 8px;
+}
+
+.book-edit,
+.book-delete {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 8px;
+  border: 1px solid var(--color-rule);
+  border-radius: 8px;
+  background: var(--color-sheet);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+
+/* 고쳐요는 600, 지워요는 400으로 굵기 단계를 나눈다. */
+.book-edit {
+  font-weight: 600;
+}
+
+.book-delete {
+  font-weight: 400;
+  color: var(--color-pencil);
+}
+
+.book-finished {
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+  margin-bottom: 8px;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.edit-form > label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+}
+
+.edit-form input[type="text"],
+.edit-form input[type="date"],
+.edit-form textarea {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--color-ink);
+  background: var(--color-sheet);
+  padding: 8px 16px;
+  border: 1px solid var(--color-pencil);
+  border-radius: 8px;
+}
+
+.status-choice {
+  display: flex;
+  gap: 16px;
+}
+
+.status-choice label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.edit-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-buttons button {
+  flex: 1;
+  font: inherit;
+  font-weight: 600;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-sheet);
+}
+
+.edit-buttons .edit-cancel {
+  font-weight: 400;
+  border: 1px solid var(--color-rule);
+  background: var(--color-sheet);
+  color: var(--color-ink);
+}
+
+.book-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  font-size: 1rem;
+}
+
+.book-author {
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+  margin-bottom: 8px;
+}
+
+.book-position {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.book-last-read {
+  font-size: 0.85rem;
+  color: var(--color-pencil);
+}
+
+.book-review {
+  font-family: var(--font-serif);
+  line-height: 1.8;
+  letter-spacing: 0;
+  font-size: 1rem;
+  color: var(--color-pencil);
+}
